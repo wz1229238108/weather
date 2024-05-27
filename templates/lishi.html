@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>历史天气</title>
+  <!-- Bootstrap core CSS-->
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- Page level plugin CSS-->
+  <link href="/static/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="/static/css/sb-admin.css" rel="stylesheet">
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="home.html">天气数据分析系统</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="/home">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">首页</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/map">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">天气地图</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+          <a class="nav-link" href="/search">
+            <i class="fa fa-fw fa-area-chart"></i>
+            <span class="nav-link-text">天气分析</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/lishi">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">历史天气</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/user">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">用户管理</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-fw fa-sign-out"></i>{{ email }}</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active">历史天气查询</li>
+      </ol>
+
+              <!-- 将原搜索框样式修改为您提供的样式 -->
+        <div class="col-xl-6 col-sm-6 mb-3">
+            <ul class="nav">
+                <li class="nav-item">
+                    <form id="searchForm">
+                        <div class="input-group">
+                            <input id="content" class="form-control" type="text" placeholder="请输入城市...">
+                            <input id="date" class="form-control" type="date" placeholder="请输入日期...">
+                            <span class="input-group-btn">
+                                <button id="searchBtn" class="btn btn-primary" type="submit">
+                                    <i class="fa fa-search"></i> 查询
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>城市</th>
+                        <th>日期</th>
+                        <th>最高温度</th>
+                        <th>最低温度</th>
+                        <th>天气</th>
+                        <th>风向</th>
+                    </tr>
+                </thead>
+
+                <tbody id="resultBody">
+                <!-- 查询结果将在此处动态添加 -->
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+                <div class="d-flex">
+                    <div id="pageInfo" class="page-info"></div>
+                    <label for="jumpPageInput">跳转到第</label>
+                    <input type="number" id="jumpPageInput" min="1" value="1" class="form-control">
+                    <label for="jumpPageInput">页</label>
+                    <button id="jumpPageButton" class="btn btn-primary" type="button">跳转</button>
+                    <button class="btn btn-primary" onclick="prevPage()">上一页</button>
+                    <button class="btn btn-primary" onclick="nextPage()">下一页</button>
+                </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid-->
+    </div>
+    <!-- /.content-wrapper-->
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>flask+mysql天气数据分析系统</small>
+        </div>
+      </div>
+    </footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"></h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+            <div class="modal-body">真的要退出系统了吗？</div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+              <a class="btn btn-primary" href="/loginOut">确定</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="/static/vendor/chart.js/Chart.min.js"></script>
+    <script src="/static/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="/static/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="/static/js/sb-admin.min.js"></script>
+    <!-- Custom scripts for this page-->
+    <script src="/static/js/sb-admin-datatables.min.js"></script>
+    <script src="/static/js/sb-admin-charts.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        var pageSize = 10;
+        var currentPage = 1;
+        var totalPages;  // 定义全局变量
+
+        function formatDate(dateString) {
+            var date = new Date(dateString);
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            return year + "年" + month + "月" + day + "日";
+        }
+//通过 AJAX 发送一个 POST 请求到服务器上的 /lishi 路径，并携带了城市和日期作为参数。服务器返回的数据是 JSON 格式的。
+//在请求成功的回调函数中，清空了结果显示区域的内容，然后根据当前页数和每页显示的数量计算出要显示的数据的起始和结束索引。
+//从返回的数据中截取出当前页的数据，并将数据逐行添加到结果显示区域。
+//它计算总页数，并更新显示页数的元素内容。
+        function executeSearch() {
+            var city = $("#content").val();
+            var date = $("#date").val();
+            $.ajax({
+                type: "POST",
+                url: "/lishi",
+                data: { city: city, date: date },
+                dataType: "json",
+                success: function(data) {
+                    $("#resultBody").empty();
+                    var start = (currentPage - 1) * pageSize;
+                    var end = start + pageSize;
+                    var pageData = data.slice(start, end);
+                    $.each(pageData, function(index, item) {
+                        var row = $("<tr>");
+                        row.append($("<td>").text(item.城市));
+                        row.append($("<td>").text(formatDate(item.日期))); // 调用 formatDate 函数
+                        row.append($("<td>").text(item.最高温度));
+                        row.append($("<td>").text(item.最低温度));
+                        row.append($("<td>").text(item.天气));
+                        row.append($("<td>").text(item.风向));
+                        $("#resultBody").append(row);
+                    });
+                    totalPages = Math.ceil(data.length / pageSize);  // 更新totalPages
+                    $("#pageInfo").text("共 " + totalPages + " 页，当前第 " + currentPage + " 页");
+                },
+                error: function(error) {
+                    console.error("搜索过程中发生错误：", error);
+                }
+            });
+        }
+
+        // 添加翻页功能
+        function nextPage() {
+            currentPage++;
+            executeSearch();
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                executeSearch();
+            }
+        }
+
+        $("#searchForm").submit(function(event) {
+            event.preventDefault();
+            currentPage = 1;  // 每次搜索时重置当前页
+            executeSearch();
+        });
+
+        $("#jumpPageButton").click(function() {
+            var jumpPage = $("#jumpPageInput").val();
+            if (jumpPage >= 1 && jumpPage <= totalPages) {
+                currentPage = parseInt(jumpPage);
+                executeSearch();
+            } else {
+                alert("请输入有效的页数！");
+            }
+        });
+
+</script>
+
+</body>
+</html>

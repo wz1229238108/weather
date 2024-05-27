@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>用户管理</title>
+  <!-- Bootstrap core CSS-->
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- Custom styles for this template-->
+  <link href="/static/css/sb-admin.css" rel="stylesheet">
+  <!-- Map styles -->
+  <style>
+    #map {
+      width: 100%;
+      height: 600px;
+    }
+  </style>
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="home.html">天气数据分析系统</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="/home">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">首页</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/map">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">天气地图</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+          <a class="nav-link" href="/search">
+            <i class="fa fa-fw fa-area-chart"></i>
+            <span class="nav-link-text">天气分析</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/lishi">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">历史天气</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/user">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">用户管理</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-fw fa-sign-out"></i>{{ email }}</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active">用户管理</li>
+      </ol>
+
+      <!-- User Profile-->
+      <div class="card">
+        <div class="card-header">
+          用户信息
+        </div>
+        <div class="card-body">
+          <form id="profileForm">
+            <div class="form-group">
+              <label for="nickname">用户名</label>
+              <input type="text" class="form-control" id="nickname" placeholder="Enter your nickname">
+            </div>
+            <div class="form-group">
+              <label for="email">邮箱</label>
+              <input type="email" class="form-control" id="email" placeholder="Enter your email" disabled>
+            </div>
+            <button type="submit" class="btn btn-primary">修改信息</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Password Modal -->
+  <div class="modal fade" id="updatePasswordModal" tabindex="-1" role="dialog" aria-labelledby="updatePasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updatePasswordModalLabel">修改密码</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="updatePasswordForm">
+            <div class="form-group">
+              <label for="newPassword">新密码</label>
+              <input type="password" class="form-control" id="newPassword" placeholder="Enter your new password">
+            </div>
+            <button type="submit" class="btn btn-primary">修改密码</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="sticky-footer">
+    <div class="container">
+      <div class="text-center">
+        <small>flask+mysql天气数据分析系统</small>
+      </div>
+    </div>
+  </footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fa fa-angle-up"></i>
+    </a>
+  <!-- Logout Modal-->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">真的要退出系统了吗？</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+          <a class="btn btn-primary" href="/loginOut">确定</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/static/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Custom scripts for all pages-->
+  <script src="/static/js/sb-admin.min.js"></script>
+  <!-- Additional scripts -->
+  <script src="../static/js/echarts.min.js"></script>
+  <script src="../static/js/map/china.js"></script>
+  <script>
+    $(document).ready(function () {
+      // 页面加载完成后获取当前用户信息并填充表单
+      $.ajax({
+        type: "GET",
+        url: "/get_user_info", // 替换成获取用户信息的接口地址
+        dataType: "json",
+        success: function (data) {
+          $("#nickname").val(data.nickname);
+          $("#email").val(data.email);
+        },
+        error: function (xhr, status, error) {
+          console.error("Failed to fetch user info:", error);
+        }
+      });
+
+      // 监听用户信息表单提交事件
+      $("#profileForm").submit(function (event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+        var nickname = $("#nickname").val();
+
+        // 发送更新用户信息的请求
+        $.ajax({
+          type: "POST",
+          url: "/update_user_info", // 替换成更新用户信息的接口地址
+          data: { nickname: nickname },
+          success: function (response) {
+            console.log("User profile updated successfully:", response);
+          },
+          error: function (xhr, status, error) {
+            console.error("Failed to update user profile:", error);
+          }
+        });
+      });
+
+      // 监听修改密码表单提交事件
+      $("#updatePasswordForm").submit(function (event) {
+        event.preventDefault(); // 阻止表单默认提交行为
+        var newPassword = $("#newPassword").val();
+
+        // 发送更新密码的请求
+        $.ajax({
+          type: "POST",
+          url: "/update_password", // 替换成更新密码的接口地址
+          data: { password: newPassword },
+          success: function (response) {
+            console.log("Password updated successfully:", response);
+            $("#newPassword").val(""); // 清空密码框
+            $("#updatePasswordModal").modal("hide"); // 隐藏修改密码模态框
+          },
+          error: function (xhr, status, error) {
+            console.error("Failed to update password:", error);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

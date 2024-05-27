@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>SB Admin</title>
+    <!-- Bootstrap core CSS-->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Page level plugin CSS-->
+    <link href="/static/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="/static/css/sb-admin.css" rel="stylesheet">
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+        <a class="navbar-brand" href="home.html">Start Bootstrap</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                    <a class="nav-link" href="/home">
+                        <i class="fa fa-fw fa-dashboard"></i>
+                        <span class="nav-link-text">首页</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                    <a class="nav-link" href="/map">
+                        <i class="fa fa-fw fa-table"></i>
+                        <span class="nav-link-text">天气地图</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+                    <a class="nav-link" href="/search">
+                        <i class="fa fa-fw fa-area-chart"></i>
+                        <span class="nav-link-text">天气分析</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                    <a class="nav-link" href="/lishi">
+                        <i class="fa fa-fw fa-table"></i>
+                        <span class="nav-link-text">历史天气</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                    <a class="nav-link" href="/user">
+                        <i class="fa fa-fw fa-table"></i>
+                        <span class="nav-link-text">用户管理</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav sidenav-toggler">
+                <li class="nav-item">
+                    <a class="nav-link text-center" id="sidenavToggler">
+                        <i class="fa fa-fw fa-angle-left"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fa fa-fw fa-sign-out"></i>{{ email }}</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+
+                <li class="breadcrumb-item active">实时天气</li>
+            </ol>
+            <!-- Icon Cards-->
+            <div class="row">
+                <!-- 搜索框 -->
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <form id="searchForm" class="form-inline my-2 my-lg-0 mr-lg-2">
+                                <div class="input-group">
+                                    <input id="searchInput" class="form-control" type="text" placeholder="Search for...">
+                                    <span class="input-group-btn">
+                                        <button id="searchBtn" class="btn btn-primary" type="submit"> <!-- 修改按钮类型为 "submit" -->
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <!-- 表格 -->
+    <div class="col-xl-12 col-sm-6 mb-3">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-table"></i> 城市天气表格
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>时间</th>
+                                <th>最高温度</th>
+                                <th>最低温度</th>
+                                <th>白天天气</th>
+                                <th>晚间天气</th>
+                                <th>降水量</th>
+                                <th>能见度</th>
+                                <th>云量</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 使用 jinja2 模板引擎循环渲染表格数据 -->
+                            {% for row in table_result %}
+                            <tr>
+                                <td>{{ row[0] }}</td>
+                                <td>{{ row[1] }}</td>
+                                <td>{{ row[2] }}</td>
+                                <td>{{ row[3] }}</td>
+                                <td>{{ row[4] }}</td>
+                                <td>{{ row[5] }}</td>
+                                <td>{{ row[6] }}</td>
+                                <td>{{ row[7] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-pie-chart"></i> 最高温度
+                        </div>
+                        <div class="card-body text-center">
+                            <div id="highestChart" style="width: 600px; height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-pie-chart"></i> 最低温度
+                        </div>
+                        <div class="card-body text-center">
+                            <div id="lowestChart" style="width: 600px; height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-pie-chart"></i> 能见度
+                        </div>
+                        <div class="card-body text-center">
+                            <div id="visibility" style="width: 600px; height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-pie-chart"></i> 湿度
+                        </div>
+                        <div class="card-body text-center">
+                            <div id="humidityChart" style="width: 600px; height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- HTML 中的四个 div，用于渲染四个折线图 -->
+            {#<div id="uvIndexChart" style="width: 600px; height: 400px;"></div>#}
+        </div>
+        <footer class="sticky-footer">
+            <div class="container">
+                <div class="text-center">
+                    <small>flask+mysql天气数据分析系统</small>
+                </div>
+            </div>
+        </footer>
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fa fa-angle-up"></i>
+        </a>
+        <!-- Logout Modal-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">真的要退出系统了吗？</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                        <a class="btn btn-primary" href="/loginOut">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap core JavaScript-->
+        <script src="/static/vendor/jquery/jquery.min.js"></script>
+        <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="/static/js/sb-admin.min.js"></script>
+
+        <script src="/static/vendor/echarts/echarts.min.js"></script>
+
+
+        <script>
+            // 监听表单提交事件
+            $('#searchForm').submit(function (event) {
+                // 阻止默认的表单提交行为
+                event.preventDefault();
+
+                // 获取用户输入的城市名称
+                var city = $('#searchInput').val();
+
+                // 发送 POST 请求到后端
+                $.ajax({
+                    type: 'POST',
+                    url: '/search',  // 后端路由的地址
+                    data: { city: city },  // 发送的数据，城市名称
+                    success: function (response) {
+                        // 请求成功时的回调函数
+                        console.log(response);  // 打印后端返回的数据
+
+                        // 渲染四个折线图
+                        renderLineChart(response);
+                        // 渲染表格数据
+                        renderTable('dataTable', response.table_result);
+                    },
+                    error: function (xhr, status, error) {
+                        // 请求失败时的回调函数
+                        console.error(error);  // 打印错误信息
+                    }
+                });
+            });
+
+            // 渲染四个折线图函数
+            function renderLineChart(data) {
+                // 渲染最高温度折线图
+                renderChart('highestChart', '最高温度', data.highest);
+
+                // 渲染最低温度折线图
+                renderChart('lowestChart', '最低温度', data.lowest);
+
+                // 渲染紫外线指数折线图
+                renderChart('visibility', '能见度', data.visibility);
+
+                // 渲染湿度折线图
+                renderChart('humidityChart', '湿度', data.humidity);
+            }
+
+            // 渲染单个折线图函数
+            function renderChart(containerId, title, data) {
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById(containerId));
+
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: title
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: data.map(function (item) {
+                            return item[0];
+                        })
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: data.map(function (item) {
+                            return item[1];
+                        }),
+                        type: 'line'
+                    }]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            }
+            function renderTable(containerId, tableData) {
+            var tableHtml = '<table class="table table-bordered"><thead><tr><th>观测时间</th><th>最高温度</th><th>最低温度</th><th>白天天气状况</th><th>晚间天气状况</th><th>降水量</th><th>能见度</th><th>云量</th></tr></thead><tbody>';
+
+            // 添加表格数据
+            for (var i = 0; i < tableData.length; i++) {
+                var rowData = tableData[i];
+                tableHtml += '<tr>';
+                tableHtml += '<td>' + rowData[0] + '</td>';
+                tableHtml += '<td>' + rowData[1] + '</td>';
+                tableHtml += '<td>' + rowData[2] + '</td>';
+                tableHtml += '<td>' + rowData[3] + '</td>';
+                tableHtml += '<td>' + rowData[4] + '</td>';
+                tableHtml += '<td>' + rowData[5] + '</td>';
+                tableHtml += '<td>' + rowData[6] + '</td>';
+                tableHtml += '<td>' + rowData[7] + '</td>';
+                tableHtml += '</tr>';
+            }
+
+            tableHtml += '</tbody></table>';
+
+            // 将表格数据添加到页面中
+            document.getElementById(containerId).innerHTML = tableHtml;
+        }
+        </script>
+    </div>
+</body>
+
+</html>

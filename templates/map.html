@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>天气地图</title>
+  <!-- Bootstrap core CSS-->
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- Custom styles for this template-->
+  <link href="/static/css/sb-admin.css" rel="stylesheet">
+  <style>
+      #map {
+          width: 800px;
+          height: 600px;
+          margin: 0 auto; /* 居中 */
+        }
+  </style>
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="home.html">天气数据分析系统</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="/home">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">首页</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/map">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">天气地图</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+          <a class="nav-link" href="/search">
+            <i class="fa fa-fw fa-area-chart"></i>
+            <span class="nav-link-text">天气分析</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/lishi">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">历史天气</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/user">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">用户管理</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-fw fa-sign-out"></i>{{ email }}</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active">地图</li>
+      </ol>
+{#        地图容器#}
+    <div class="col-lg-12">
+        <div class="card mb-3">
+          <div class="card-header">
+            <i class="fa fa-area-chart"></i> 中国地图热力图
+          </div>
+          <div class="card-body">
+            <div id="map" style="width: 800px; height: 600px;"></div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="sticky-footer">
+    <div class="container">
+      <div class="text-center">
+        <small>flask+mysql天气数据分析系统</small>
+      </div>
+    </div>
+  </footer>
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fa fa-angle-up"></i>
+  </a>
+  <!-- Logout Modal-->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">真的要退出系统了吗？</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+          <a class="btn btn-primary" href="/loginOut">确定</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap core JavaScript-->
+  <script src="/static/vendor/jquery/jquery.min.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Custom scripts for all pages-->
+  <script src="/static/js/sb-admin.min.js"></script>
+  <script src="../static/js/echarts.min.js"></script>
+  <script src="../static/js/map/china.js"></script>
+
+  <script>
+    // 获取后端传递的温度数据
+    var temperatureData = JSON.parse('{{ temperatureData | safe }}');
+
+    // 初始化 ECharts 实例
+    var myChart = echarts.init(document.getElementById('map'));
+
+    // 配置热力地图
+    var option = {
+      tooltip: {
+        trigger: 'item',
+        triggerOn: 'mousemove', // 只有当鼠标移动到省份上时才触发提示框
+        formatter: function (params) {
+          var cityName = params.name;
+          var temperature = params.value;
+          return cityName + ': ' + temperature + '℃'; // 自定义提示框内容格式
+        }
+      },
+      visualMap: {
+        min: -10,   // 温度最小值
+        max: 40,    // 温度最大值
+        left: 'left',
+        top: 'bottom',
+        text: ['高', '低'],
+        calculable: true
+      },
+      series: [{
+        type: 'map',
+        mapType: 'china',  // 使用中国地图
+        roam: false,        // 允许缩放和拖动
+        label: {
+          show: true
+        },
+        // 添加点击事件处理
+        data: Object.keys(temperatureData).map(function (city) {
+          return { name: city, value: temperatureData[city], selected: false };
+        }),
+        // 选中省份后触发事件
+        selectedMode: 'single',
+        emphasis: {
+          label: {
+            show: true
+          }
+        }
+      }]
+    };
+
+    // 使用刚指定的配置项和数据显示热力地图
+    myChart.setOption(option);
+
+    // 点击事件处理
+    myChart.on('click', function (params) {
+      var selectedProvince = params.name;
+      // 发送 AJAX 请求加载省份对应的城市列表
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var cityData = JSON.parse(xhr.responseText);
+          var cities = cityData[selectedProvince];
+          alert(selectedProvince + '的城市列表：' + cities.join(', '));
+        }
+      };
+      xhr.open('GET', '../spider/province_city.json', true);
+      xhr.send();
+    });
+  </script>
+</body>
+
+</html>
