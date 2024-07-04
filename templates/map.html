@@ -25,7 +25,7 @@
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
-  {% include 'navbar.html' %}
+   {% include 'navbar.html' %}
   <div class="content-wrapper">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
@@ -37,6 +37,13 @@
         <div class="card mb-3">
           <div class="card-header">
             <i class="fa fa-area-chart"></i> 中国地图热力图
+            <select id="dataSelector" onchange="updateChart()">
+                            <option value="温度">温度</option>
+                            <option value="体感温度">体感温度</option>
+                            <option value="风力等级">风力等级</option>
+                            <option value="湿度">湿度</option>
+                            <option value="能见度">能见度</option>
+                        </select>
           </div>
           <div class="card-body">
             <div id="map" style="width: 800px; height: 600px;"></div>
@@ -87,8 +94,34 @@
   <script src="/static/js/sb-admin.min.js"></script>
   <script src="../static/js/echarts.min.js"></script>
   <script src="../static/js/map/china.js"></script>
+  <script src="../static/js/map/province/beijing.js"></script>
 
   <script>
+    function updateChart() {
+    var selector = document.getElementById('dataSelector');
+    var selectedDataType = selector.value; // 获取选择的数据类型，如'温度'
+
+    // 更新地图数据
+    myChart.setOption({
+        series: [{
+            data: Object.keys(temperatureData).map(function(city) {
+                return {
+                    name: city,
+                    value: temperatureData[city][selectedDataType],
+                    selected: false
+                };
+            })
+        }],
+        visualMap: {
+            min: selectedDataType === '湿度' ? 0 : -10,
+            max: selectedDataType === '湿度' ? 100 : 40,
+            left: 'left',
+            top: 'bottom',
+            text: ['高', '低'],
+            calculable: true
+        }
+    });
+}
     // 获取后端传递的温度数据
     var temperatureData = JSON.parse('{{ temperatureData | safe }}');
 
@@ -101,10 +134,17 @@
         trigger: 'item',
         triggerOn: 'mousemove', // 只有当鼠标移动到省份上时才触发提示框
         formatter: function (params) {
-          var cityName = params.name;
-          var temperature = params.value;
-          return cityName + ': ' + temperature + '℃'; // 自定义提示框内容格式
-        }
+        var cityName = params.name;
+        var weatherInfo = temperatureData[cityName] || {};
+        var tooltipContent = cityName;
+        tooltipContent += weatherInfo['温度'] ? ': 温度 ' + weatherInfo['温度'] + '℃' : '';
+        tooltipContent += weatherInfo['体感温度'] ? '\n, 体感 ' + weatherInfo['体感温度'] + '℃' : '';
+        tooltipContent += weatherInfo['天气情况'] ? '\n, 天气 ' + weatherInfo['天气情况'] : '';
+        tooltipContent += weatherInfo['风力等级'] ? '\n, 风力 ' + weatherInfo['风力等级'] : '';
+        tooltipContent += weatherInfo['湿度'] ? '\n, 湿度 ' + weatherInfo['湿度'] + '%' : '';
+        tooltipContent += weatherInfo['能见度'] ? '\n, 能见度 ' + weatherInfo['能见度'] + 'km' : '';
+        return tooltipContent; // 自定义提示框内容格式
+      }
       },
       visualMap: {
         min: -10,   // 温度最小值
@@ -117,13 +157,12 @@
       series: [{
         type: 'map',
         mapType: 'china',  // 使用中国地图
-        roam: false,        // 允许缩放和拖动
+        roam: true,        // 允许缩放和拖动
         label: {
           show: true
         },
-        // 添加点击事件处理
         data: Object.keys(temperatureData).map(function (city) {
-          return { name: city, value: temperatureData[city], selected: false };
+          return { name: city, value: temperatureData[city]['温度'], selected: false }; // 确保只传递温度值
         }),
         // 选中省份后触发事件
         selectedMode: 'single',
