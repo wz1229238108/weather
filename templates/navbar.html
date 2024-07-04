@@ -1,0 +1,63 @@
+<!-- templates/navbar.html -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+       <a class="navbar-brand" href="home.html">天气数据分析预测与可视化系统</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="/home">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">首页-实时天气概况</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/map">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">实时天气地图</span>
+          </a>
+        </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/big-screen">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">历史天气可视化大屏</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/lishi">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">历史天气查询</span>
+          </a>
+        </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+          <a class="nav-link" href="/search">
+            <i class="fa fa-fw fa-area-chart"></i>
+            <span class="nav-link-text">未来天气预测分析</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+          <a class="nav-link" href="/user">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">用户管理</span>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-fw fa-sign-out"></i>{{ email }}</a>
+        </li>
+      </ul>
+    </div>
+</nav>
