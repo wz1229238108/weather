@@ -5,54 +5,68 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="/home">
-            <i class="fa fa-fw fa-dashboard"></i>
-            <span class="nav-link-text">首页-实时天气概况</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="/map">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">实时天气地图</span>
-          </a>
-        </li>
-          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="/big-screen">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">可视化大屏</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="/lishi">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">历史天气分析</span>
-          </a>
-        </li>
+   <div class="collapse navbar-collapse" id="navbarResponsive">
+  <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+      <a class="nav-link" href="/home">
+        <i class="fa fa-fw fa-home"></i>
+        <span class="nav-link-text">首页</span>
+      </a>
+    </li>
+    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Weather Map">
+      <a class="nav-link" href="/map">
+        <i class="fa fa-fw fa-map"></i>
+        <span class="nav-link-text">天气地图</span>
+      </a>
+    </li>
 
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="/user">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">用户管理</span>
-          </a>
-        </li>
-      </ul>
+    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Historical Weather Analysis">
+      <a class="nav-link" href="/lishi2">
+        <i class="fa fa-fw fa-history"></i>
+        <span class="nav-link-text">历史天气分析</span>
+      </a>
+    </li>
+    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Historical Weather Analysis">
+      <a class="nav-link" href="/lishi">
+        <i class="fa fa-fw fa-table"></i>
+        <span class="nav-link-text">历史天气查询</span>
+      </a>
+    </li>
+    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Weather Reports">
+      <a class="nav-link" href="/search">
+        <i class="fa fa-fw fa-bullhorn"></i>
+        <span class="nav-link-text">天气预报</span>
+      </a>
+    </li>
 
-      <ul class="navbar-nav sidenav-toggler">
-        <li class="nav-item">
-          <a class="nav-link text-center" id="sidenavToggler">
-            <i class="fa fa-fw fa-angle-left"></i>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
+    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="User Management">
+      <a class="nav-link" href="/user">
+        <i class="fa fa-fw fa-user"></i>
+        <span class="nav-link-text">用户管理</span>
+      </a>
+    </li>
+  </ul>
 
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-            <i class="fa fa-fw fa-sign-out"></i>{{ email }}</a>
-        </li>
-      </ul>
-    </div>
+  <ul class="navbar-nav sidenav-toggler">
+    <li class="nav-item">
+      <a class="nav-link text-center" id="sidenavToggler">
+        <i class="fa fa-fw fa-angle-left"></i>
+      </a>
+    </li>
+  </ul>
+<!--  <ul class="navbar-nav ml-auto">-->
+<!--    <li class="nav-item">-->
+<!--      <a class="nav-link" data-toggle="modal" data-target="#exampleModal">-->
+<!--        <i class="fa fa-fw fa-sign-out"></i>{{ email }}</a>-->
+<!--    </li>-->
+<!--  </ul>-->
+    <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="nav-link"  style="color: #ffffff" data-toggle="modal" data-target="#exampleModal">
+        <i class="fa fa-fw fa-sign-out"></i>{{ username }}</a>
+    </li>
+  </ul>
+
+</div>
+
 </nav>

@@ -19,62 +19,7 @@
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="home.html">天气数据分析系统</a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="/home">
-            <i class="fa fa-fw fa-dashboard"></i>
-            <span class="nav-link-text">首页</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="/map">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">天气地图</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="/search">
-            <i class="fa fa-fw fa-area-chart"></i>
-            <span class="nav-link-text">天气分析</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="/lishi">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">历史天气</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="/user">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">用户管理</span>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav sidenav-toggler">
-        <li class="nav-item">
-          <a class="nav-link text-center" id="sidenavToggler">
-            <i class="fa fa-fw fa-angle-left"></i>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-            <i class="fa fa-fw fa-sign-out"></i>{{ email }}</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+   {% include 'navbar.html' %}
   <div class="content-wrapper">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
@@ -194,7 +139,84 @@
     <script src="/static/js/sb-admin-datatables.min.js"></script>
     <script src="/static/js/sb-admin-charts.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        var pageSize = 10;
+        var currentPage = 1;
+        var totalPages;  // 定义全局变量
 
+        function formatDate(dateString) {
+            var date = new Date(dateString);
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            return year + "年" + month + "月" + day + "日";
+        }
+//通过 AJAX 发送一个 POST 请求到服务器上的 /lishi 路径，并携带了城市和日期作为参数。服务器返回的数据是 JSON 格式的。
+//在请求成功的回调函数中，清空了结果显示区域的内容，然后根据当前页数和每页显示的数量计算出要显示的数据的起始和结束索引。
+//从返回的数据中截取出当前页的数据，并将数据逐行添加到结果显示区域。
+//它计算总页数，并更新显示页数的元素内容。
+        function executeSearch() {
+            var city = $("#content").val();
+            var date = $("#date").val();
+            $.ajax({
+                type: "POST",
+                url: "/lishi",
+                data: { city: city, date: date },
+                dataType: "json",
+                success: function(data) {
+                    $("#resultBody").empty();
+                    var start = (currentPage - 1) * pageSize;
+                    var end = start + pageSize;
+                    var pageData = data.slice(start, end);
+                    $.each(pageData, function(index, item) {
+                        var row = $("<tr>");
+                        row.append($("<td>").text(item.城市));
+                        row.append($("<td>").text(formatDate(item.日期))); // 调用 formatDate 函数
+                        row.append($("<td>").text(item.最高温度));
+                        row.append($("<td>").text(item.最低温度));
+                        row.append($("<td>").text(item.天气));
+                        row.append($("<td>").text(item.风向));
+                        $("#resultBody").append(row);
+                    });
+                    totalPages = Math.ceil(data.length / pageSize);  // 更新totalPages
+                    $("#pageInfo").text("共 " + totalPages + " 页，当前第 " + currentPage + " 页");
+                },
+                error: function(error) {
+                    console.error("搜索过程中发生错误：", error);
+                }
+            });
+        }
+
+        // 添加翻页功能
+        function nextPage() {
+            currentPage++;
+            executeSearch();
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                executeSearch();
+            }
+        }
+
+        $("#searchForm").submit(function(event) {
+            event.preventDefault();
+            currentPage = 1;  // 每次搜索时重置当前页
+            executeSearch();
+        });
+
+        $("#jumpPageButton").click(function() {
+            var jumpPage = $("#jumpPageInput").val();
+            if (jumpPage >= 1 && jumpPage <= totalPages) {
+                currentPage = parseInt(jumpPage);
+                executeSearch();
+            } else {
+                alert("请输入有效的页数！");
+            }
+        });
+
+</script>
 
 </body>
 </html>

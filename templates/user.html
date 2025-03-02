@@ -23,64 +23,14 @@
   </style>
 </head>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
-  <!-- Navigation-->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="home.html">天气数据分析系统</a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="/home">
-            <i class="fa fa-fw fa-dashboard"></i>
-            <span class="nav-link-text">首页</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="/map">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">天气地图</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="/search">
-            <i class="fa fa-fw fa-area-chart"></i>
-            <span class="nav-link-text">天气分析</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="/lishi">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">历史天气</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="/user">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">用户管理</span>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav sidenav-toggler">
-        <li class="nav-item">
-          <a class="nav-link text-center" id="sidenavToggler">
-            <i class="fa fa-fw fa-angle-left"></i>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-            <i class="fa fa-fw fa-sign-out"></i>{{ email }}</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+    <body class="fixed-nav sticky-footer bg-dark" id="page-top">
+    <!-- Navigation-->
+    {% include 'navbar.html' %}
+        <style type="text/css">
+    .nav-item {
+        padding: 0 10px; /* 调整这个值来增加或减少间距 */
+    }
+    </style>
   <div class="content-wrapper">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
@@ -88,22 +38,92 @@
         <li class="breadcrumb-item active">用户管理</li>
       </ol>
 
-      <!-- User Profile-->
-      <div class="card">
-        <div class="card-header">
-          用户信息
+    <!-- User Profile Table -->
+<!--    <div class="card">-->
+<!--      <div class="card-header">-->
+<!--        用户信息-->
+<!--      </div>-->
+      <div class="card-body">
+        <!-- 添加了 table-bordered 和 table-striped 类 -->
+        <table class="table table-hover table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>信息项</th>
+              <th>详情</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">用户名</th>
+              <td id="username-display">Username</td>
+              <td><button type="button" class="btn btn-link" id="modifyUsername">修改</button></td>
+            </tr>
+            <tr>
+              <th scope="row">邮箱</th>
+              <td id="email-display">Email@example.com</td>
+              <td><button type="button" class="btn btn-link" id="modifyEmail">修改</button></td>
+            </tr>
+            <tr>
+              <th scope="row">密码</th>
+              <td id="password-display">********</td>
+              <td><button type="button" class="btn btn-link" id="modifyPassword">修改</button></td>
+            </tr>
+            <tr>
+              <th scope="row">我关注的城市</th>
+              <td id="cities-display">无</td>
+              <td>
+                <button type="button" class="btn btn-link" id="addCity">添加</button>
+                <button type="button" class="btn btn-link" id="removeCity">删除</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  <!-- Update Username Modal -->
+  <div class="modal fade" id="updateUsernameModal" tabindex="-1" role="dialog" aria-labelledby="updateUsernameModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateUsernameModalLabel">修改用户名</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <div class="card-body">
-          <form id="profileForm">
+        <div class="modal-body">
+          <form id="updateUsernameForm">
             <div class="form-group">
-              <label for="nickname">用户名</label>
-              <input type="text" class="form-control" id="nickname" placeholder="Enter your nickname">
+              <label for="newUsername">新用户名</label>
+              <input type="text" class="form-control" id="newUsername" placeholder="Enter your new username">
             </div>
+            <button type="submit" class="btn btn-primary">修改用户名</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Email Modal -->
+  <div class="modal fade" id="updateEmailModal" tabindex="-1" role="dialog" aria-labelledby="updateEmailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateEmailModalLabel">修改邮箱</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="updateEmailForm">
             <div class="form-group">
-              <label for="email">邮箱</label>
-              <input type="email" class="form-control" id="email" placeholder="Enter your email" disabled>
+              <label for="newEmail">新邮箱</label>
+              <input type="email" class="form-control" id="newEmail" placeholder="Enter your new email">
             </div>
-            <button type="submit" class="btn btn-primary">修改信息</button>
+            <button type="submit" class="btn btn-primary">修改邮箱</button>
           </form>
         </div>
       </div>
@@ -133,36 +153,81 @@
       </div>
     </div>
   </div>
+    <!-- Add City Modal -->
+    <div class="modal fade" id="addCityModal" tabindex="-1" role="dialog" aria-labelledby="addCityModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addCityModalLabel">添加关注城市</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="addCityForm">
+              <div class="form-group">
+                <label for="newCity">城市名称</label>
+                <input type="text" class="form-control" id="newCity" placeholder="Enter city name">
+              </div>
+              <button type="submit" class="btn btn-primary">添加</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 删除城市模态框 -->
+    <div class="modal fade" id="removeCityModal" tabindex="-1" role="dialog" aria-labelledby="removeCityModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="removeCityModalLabel">删除关注城市</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- 城市列表将通过 JavaScript 动态生成 -->
+            <form id="removeCitiesForm">
+              <!-- 城市复选框列表将在这里动态生成 -->
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" id="confirmRemoveCities">确认删除</button>
+          </div>
+        </div>
+      </div>
+    </div>
   <footer class="sticky-footer">
     <div class="container">
       <div class="text-center">
-        <small>flask+mysql天气数据分析系统</small>
+        <small style="color: #abdde5;">第五组+全国天气可视化分析平台</small>
       </div>
     </div>
   </footer>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fa fa-angle-up"></i>
-    </a>
-  <!-- Logout Modal-->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"></h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">真的要退出系统了吗？</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
-          <a class="btn btn-primary" href="/loginOut">确定</a>
-        </div>
-      </div>
-    </div>
-  </div>
 
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fa fa-angle-up"></i>
+  </a>
+        <!-- Logout Modal-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"></h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">确定退出系统吗？</div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+              <a class="btn btn-primary" href="/loginOut">确定</a>
+            </div>
+          </div>
+        </div>
+        </div>
   <!-- Bootstrap core JavaScript-->
   <script src="/static/vendor/jquery/jquery.min.js"></script>
   <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -175,61 +240,211 @@
   <script src="../static/js/map/china.js"></script>
   <script>
     $(document).ready(function () {
-      // 页面加载完成后获取当前用户信息并填充表单
-      $.ajax({
-        type: "GET",
-        url: "/get_user_info", // 替换成获取用户信息的接口地址
-        dataType: "json",
-        success: function (data) {
-          $("#nickname").val(data.nickname);
-          $("#email").val(data.email);
-        },
-        error: function (xhr, status, error) {
-          console.error("Failed to fetch user info:", error);
-        }
+    // 页面加载完成后获取当前用户信息并填充表单
+    $.ajax({
+      type: "GET",
+      url: "/get_user_info",
+      dataType: "json",
+      success: function (data) {
+        $("#username-display").text(data.username);
+        $("#email-display").text(data.email);
+        $("#password-display").text(data.password); // 显示密码（星号）
+      },
+      error: function (xhr, status, error) {
+        console.error("Failed to fetch user info:", error);
+      }
+    });
+
+      // 监听修改用户名按钮点击事件
+      $("#modifyUsername").click(function () {
+        $("#updateUsernameModal").modal("show");
       });
 
-      // 监听用户信息表单提交事件
-      $("#profileForm").submit(function (event) {
-        event.preventDefault(); // 阻止表单默认提交行为
-        var nickname = $("#nickname").val();
-
-        // 发送更新用户信息的请求
+      // 监听修改用户名表单提交事件
+      $("#updateUsernameForm").submit(function (event) {
+        event.preventDefault();
+        var newUsername = $("#newUsername").val();
         $.ajax({
           type: "POST",
-          url: "/update_user_info", // 替换成更新用户信息的接口地址
-          data: { nickname: nickname },
+          url: "/update_username",
+          data: JSON.stringify({ newUsername: newUsername }),
+          contentType: "application/json",
           success: function (response) {
-            console.log("User profile updated successfully:", response);
+            console.log("Username updated successfully:", response);
+            $("#updateUsernameModal").modal("hide");
+            $("#username-display").text(newUsername);
           },
           error: function (xhr, status, error) {
-            console.error("Failed to update user profile:", error);
+            console.error("Failed to update username:", error);
           }
         });
       });
 
-      // 监听修改密码表单提交事件
-      $("#updatePasswordForm").submit(function (event) {
-        event.preventDefault(); // 阻止表单默认提交行为
-        var newPassword = $("#newPassword").val();
+      // 监听修改邮箱按钮点击事件
+      $("#modifyEmail").click(function () {
+        $("#updateEmailModal").modal("show");
+      });
 
-        // 发送更新密码的请求
+      // 监听修改邮箱表单提交事件
+      $("#updateEmailForm").submit(function (event) {
+        event.preventDefault();
+        var newEmail = $("#newEmail").val();
         $.ajax({
           type: "POST",
-          url: "/update_password", // 替换成更新密码的接口地址
-          data: { password: newPassword },
+          url: "/update_email",
+          data: JSON.stringify({ newEmail: newEmail }),
+          contentType: "application/json",
+          success: function (response) {
+            console.log("Email updated successfully:", response);
+            $("#updateEmailModal").modal("hide");
+            $("#email-display").text(newEmail);
+          },
+          error: function (xhr, status, error) {
+            console.error("Failed to update email:", error);
+          }
+        });
+      });
+
+      // 监听修改密码按钮点击事件
+      $("#modifyPassword").click(function () {
+        $("#updatePasswordModal").modal("show");
+      });
+
+      // 监听修改密码表单提交事件
+      $("#updatePasswordForm").submit(function (event) {
+        event.preventDefault();
+        var newPassword = $("#newPassword").val();
+        $.ajax({
+          type: "POST",
+          url: "/update_password",
+          data: JSON.stringify({ newPassword: newPassword }),
+          contentType: "application/json",
           success: function (response) {
             console.log("Password updated successfully:", response);
-            $("#newPassword").val(""); // 清空密码框
-            $("#updatePasswordModal").modal("hide"); // 隐藏修改密码模态框
+            $("#updatePasswordModal").modal("hide");
           },
           error: function (xhr, status, error) {
             console.error("Failed to update password:", error);
           }
         });
       });
+       // 初始化我关注的城市列表
+      updateCitiesDisplay();
+
+      // 绑定添加城市的按钮事件
+      $("#addCity").click(function () {
+        $("#addCityModal").modal("show");
+      });
+
+      // 绑定添加城市表单的提交事件
+      $("#addCityForm").submit(function (event) {
+        event.preventDefault();
+        var newCity = $("#newCity").val();
+        if (newCity) {
+          $.ajax({
+            type: "POST",
+            url: "/add_city",
+            data: JSON.stringify({ newCity: newCity }),
+            contentType: "application/json",
+            success: function (response) {
+              if (response.message === "城市添加成功") {
+                updateCitiesDisplay(response.cities);
+                $("#addCityModal").modal("hide");
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error("Failed to add city:", error);
+            }
+          });
+        }
+      });
+    });
+
+    // 更新页面上显示的城市列表
+    function updateCitiesDisplay(cities) {
+      var citiesDisplay = $("#cities-display");
+      if (cities && cities.length > 0) {
+        citiesDisplay.empty();
+        cities.forEach(function (city) {
+          citiesDisplay.append(city + "<br>");
+        });
+      } else {
+        citiesDisplay.text("无");
+      }
+    }
+
+    // 首次加载页面时获取用户信息并更新显示
+    function fetchAndUpdateUserInfo() {
+      $.getJSON("/get_user_info", function (data) {
+        $("#username-display").text(data.username);
+        $("#email-display").text(data.email);
+        $("#password-display").text("********"); // 密码显示星号
+        updateCitiesDisplay(data.cities); // 显示关注的城市
+      });
+    }
+
+    // 调用函数
+    fetchAndUpdateUserInfo();
+
+    // 绑定删除城市按钮事件
+      $("#removeCity").click(function () {
+        showRemoveCityModal();
+      });
+
+    // 显示删除城市模态框并填充城市列表
+    function showRemoveCityModal() {
+        // AJAX 请求获取用户关注的城市列表
+        $.ajax({
+            type: "GET",
+            url: "/get_user_info", // 确保这个接口能返回用户关注的城市列表
+            dataType: "json",
+            success: function (data) {
+                var cities = data.cities;
+                $("#removeCityModal .modal-body").empty(); // 清空模态框内容
+                if (cities && cities.length > 0) {
+                    cities.forEach(function (city) {
+                        $("#removeCityModal .modal-body").append(
+                            '<div class="form-check"><label class="form-check-label">' +
+                            '<input class="form-check-input" type="checkbox" value="' + city + '">' + city +
+                            '</label></div>'
+                        );
+                    });
+                    $("#removeCityModal").modal("show");
+                } else {
+                    alert("没有城市可供删除！");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Failed to fetch cities:", error);
+            }
+        });
+    }
+
+    // 绑定删除城市模态框的确认按钮事件
+    $("#confirmRemoveCities").click(function () {
+      var citiesToRemove = [];
+      $("#removeCityModal .form-check-input:checked").each(function () {
+        citiesToRemove.push($(this).val());
+      });
+      if (citiesToRemove.length > 0) {
+        // 发送 AJAX 请求到后端删除城市
+        $.ajax({
+          type: "POST",
+          url: "/remove_city",
+          data: JSON.stringify({ citiesToRemove: citiesToRemove }),
+          contentType: "application/json",
+          success: function (response) {
+            if (response.message === "删除成功") {
+              updateCitiesDisplay(response.cities);
+              $("#removeCityModal").modal("hide");
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error("Failed to remove cities:", error);
+          }
+        });
+      }
     });
   </script>
 </body>
-
 </html>
